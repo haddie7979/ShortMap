@@ -47,7 +47,7 @@ void Graph::init(int size) {
   // edges. In the end, most nodes will have more than two adjacent nodes due to
   // other nodes also choosing that node as an adjacent location.
   for (int i = 0; i < size; i++) {
-    set<int> adjNodes;
+    unordered_set<int> adjNodes;
     int adjacentMaxSize = 2;
     while (true) {
       int adj = generateRandomNode(size - 1);
@@ -97,7 +97,7 @@ void Graph::visualize() {
 
 void Graph::shortestPathWithoutTraffic(int src, int dest) {
 
-  set<int> visited;
+  unordered_set<int> visited;
   queue<int> q;
   vector<int> d(adjList.size(), INT_MAX); // distance vector
   vector<int> p(adjList.size(), -1);      // predecessors vector

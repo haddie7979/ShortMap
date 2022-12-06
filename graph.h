@@ -57,6 +57,7 @@ void Graph::init(int size) {
 
       if (adjNodes.count(adj) != 0)
         continue;
+
       if (edges.count(make_pair(i, adj)) != 0 ||
           edges.count(make_pair(adj, i)) != 0)
         continue;
@@ -172,15 +173,15 @@ void Graph::shortestPathWithTraffic(int src, int dest) {
 
   d[src] = 0;
 
-  for (int i = 0; i < adjList.size(); i++) { // 7 -> 2 3 4
+  for (int i = 0; i < adjList.size(); i++) { // 7 -> 2 3 4  //O(V)
     // smallest -> helper function -> returns index
     int minIndex = minDist(d, valVisited); // Find smallest element in d
-    valVisited[minIndex] = true;
+    valVisited[minIndex] = true;  //O(V)
 
     // Iterate through vertices adjacent to the vertex with the smallest
     // distance, relax edges as necessary
-    for (auto j : adjList[minIndex]) {
-      int temp = d[minIndex] + j.second;
+    for (auto j : adjList[minIndex]) {   // O(E)
+      int temp = d[minIndex] + j.second;  
       if (temp < d[j.first]) {
         d[j.first] = temp;
         p[j.first] = minIndex;
@@ -192,7 +193,7 @@ void Graph::shortestPathWithTraffic(int src, int dest) {
 
   stack<int> path;
   int pfind = dest;
-  while (pfind != -1) {
+  while (pfind != -1) { //O(p)
     path.push(pfind);
     pfind = p[pfind];
   }
@@ -213,20 +214,24 @@ void Graph::shortestPathWithTraffic(int src, int dest) {
   int prevTop = path.top();
   cout << path.top();
   path.pop();
-  while (!path.empty()) {
-    cout << " -> " << path.top();
+  while (!path.empty()) {  //O(S)
+    cout << " -> " << path.top(); 
     prevTop = path.top();
     path.pop();
   }
   cout << endl;
   cout << "Total traffic on this route is: " << totalTraffic << " minutes"
        << endl;
+
+  //O(V*V*E)~ O(V^2 * E)
+  // O(S) + O(S) ~ O(2S) + O(S)
+  // O(V^2 * E) + O(S) ~ O(V^2 * E)
 }
 
 int Graph::minDist(vector<int> &d, vector<bool> &v) {
   int max = INT_MAX;
   int ret = -1;
-  for (int i = 0; i < d.size(); i++) {
+  for (int i = 0; i < d.size(); i++) { //O(V)
     if (d[i] < max && v[i] == false) {
       max = d[i];
       ret = i;
